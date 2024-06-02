@@ -1,11 +1,13 @@
-import { Link } from 'react-router-dom';
+import NavBar from './NavBar';
 
 function NotFoundPage() {
   return (
-    <div className="flex flex-col gap-2">
-      404 not found
-      <Link to="/">Go back to home</Link>
-    </div>
+    <>
+      <div className="flex h-screen flex-col items-center justify-center gap-2 bg-slate-400 font-bold">
+        404 not found
+      </div>
+      <NavBar />
+    </>
   );
 }
 

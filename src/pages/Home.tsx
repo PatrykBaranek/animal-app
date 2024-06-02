@@ -1,50 +1,38 @@
-import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-
 import axios from 'axios';
-import useSWR from 'swr';
+import useSWRInfinite from 'swr/infinite';
 
-type DogData = {
+interface DogData {
   message: string[];
   status: string;
-};
+}
 
-// type FoxData = {
-//   image: string,
-//   link: string,
-// };
+const URL = 'https://dog.ceo/api/breeds/image/random/50';
 
 const fetcher = (url: string) => axios.get(url).then((res) => res.data);
 
+const getKey = (pageIndex: number, previousPageData: DogData) => {
+  if (previousPageData && !previousPageData.message.length) return null;
+  return URL;
+};
+
 function Home() {
-  const { data: dogData, mutate: mutateDog } = useSWR<DogData>(
-    'https://dog.ceo/api/breeds/image/random/3',
-    fetcher
-  );
+  const { data } = useSWRInfinite<DogData>(getKey, fetcher);
 
   return (
-    <div>
-      <div>
-        <ImageList>
-          {dogData?.message.map((url) => (
-            <ImageListItem key={url} cols={4} rows={2}>
-              <img src={url} loading="lazy" className="dog" alt="Dog photo" />
-            </ImageListItem>
+    <div className="mb-16 flex flex-col">
+      <div></div>
+      {data?.map((data, index) => (
+        <div key={index} className="flex flex-wrap items-center justify-center">
+          {data?.message.map((dogUrl, index) => (
+            <img
+              key={index}
+              src={dogUrl}
+              alt="Dog"
+              className="h-full w-full object-fill"
+            />
           ))}
-        </ImageList>
-      </div>
-      <div className="card">
-        <Button
-          variant="outlined"
-          onClick={() => {
-            mutateDog();
-          }}
-        >
-          Refresh
-        </Button>
-      </div>
+        </div>
+      ))}
     </div>
   );
 }

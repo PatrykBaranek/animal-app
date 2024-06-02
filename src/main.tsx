@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import NotFoundPage from './pages/NotFoundPage.tsx';
 import Home from './pages/Home.tsx';
-import Todos from './pages/Todos.tsx';
 import Layout from './pages/Layout.tsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
@@ -14,16 +13,16 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       {
-        path: '/',
+        path: '/dogs',
         element: <Home />,
       },
       {
-        path: '/todos',
-        element: <Todos />,
+        path: '/cats',
+        element: <NotFoundPage />,
       },
       {
         path: '/collections',
-        element: <Todos />,
+        element: <NotFoundPage />,
       },
     ],
   },
