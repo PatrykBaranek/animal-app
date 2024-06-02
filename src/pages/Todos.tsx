@@ -8,14 +8,17 @@ interface FormData {
   description: string;
 }
 
-function App() {
+function Todos() {
   const [todos, setTodos] = React.useState(() => dummyData);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
+    clearErrors,
   } = useForm<FormData>();
+
+  const formRef = React.useRef<HTMLFormElement>(null);
 
   function setTodoCompleted(id: number, completed: boolean) {
     setTodos((prevTodos) => {
@@ -34,6 +37,7 @@ function App() {
     }
 
     setTodos((prevTodos) => {
+      formRef.current?.reset();
       return [
         ...prevTodos,
         {
@@ -51,6 +55,7 @@ function App() {
         Your Todos
       </h1>
       <form
+        ref={formRef}
         className="mx-auto mt-5 flex max-w-xl flex-col justify-around gap-4 rounded-md bg-slate-200 p-4 md:flex-row"
         onSubmit={handleSubmit(onSubmit)}
       >
@@ -60,6 +65,7 @@ function App() {
             type="checkbox"
             className="scale-125"
             {...register('completed')}
+            onChange={() => clearErrors('description')}
           />
         </label>
         <label
@@ -76,7 +82,7 @@ function App() {
         )}
         <button
           type="submit"
-          className="rounded-full bg-cyan-400 p-3 text-center font-bold text-white outline-none hover:bg-cyan-600 focus:outline-blue-300"
+          className="rounded-full bg-cyan-400 p-3 text-center font-bold text-white outline-none transition duration-200 ease-linear hover:bg-cyan-600 focus:outline-blue-300"
         >
           Add Todo
         </button>
@@ -96,4 +102,4 @@ function App() {
   );
 }
 
-export default App;
+export default Todos;
