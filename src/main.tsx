@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import NotFoundPage from './pages/NotFoundPage.tsx';
+import Dogs from './pages/Dogs.tsx';
 import Home from './pages/Home.tsx';
 import Layout from './pages/Layout.tsx';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
@@ -13,8 +14,12 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage />,
     children: [
       {
+        path: '/',
+        element: <Home />
+      },
+      {
         path: '/dogs',
-        element: <Home />,
+        element: <Dogs />,
       },
       {
         path: '/cats',

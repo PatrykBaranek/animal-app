@@ -1,39 +1,73 @@
-import axios from 'axios';
-import useSWRInfinite from 'swr/infinite';
-
-interface DogData {
-  message: string[];
-  status: string;
-}
-
-const URL = 'https://dog.ceo/api/breeds/image/random/50';
-
-const fetcher = (url: string) => axios.get(url).then((res) => res.data);
-
-const getKey = (pageIndex: number, previousPageData: DogData) => {
-  if (previousPageData && !previousPageData.message.length) return null;
-  return URL;
-};
+import React from 'react';
+import { motion } from 'framer-motion';
 
 function Home() {
-  const { data } = useSWRInfinite<DogData>(getKey, fetcher);
+  const calculateTimeLeft = () => {
+    const targetDate = new Date('2024-08-06T11:00:00');
+    const now = new Date();
+    const difference = targetDate - now;
+
+    let timeLeft = {};
+
+    if (difference > 0) {
+      timeLeft = {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
+      };
+    }
+
+    return timeLeft;
+  };
+
+  const [timeLeft, setTimeLeft] = React.useState(() => calculateTimeLeft());
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 1 } },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: -50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+  };
 
   return (
-    <div className="mb-16 flex flex-col">
-      <div></div>
-      {data?.map((data, index) => (
-        <div key={index} className="flex flex-wrap items-center justify-center">
-          {data?.message.map((dogUrl, index) => (
-            <img
-              key={index}
-              src={dogUrl}
-              alt="Dog"
-              className="h-full w-full object-fill"
-            />
-          ))}
-        </div>
-      ))}
-    </div>
+    <motion.div
+      className="countdown-timer"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      <h1>Countdown to August 6, 11 AM</h1>
+      <div>
+        {timeLeft.days !== undefined && (
+          <>
+            <motion.span variants={itemVariants}>
+              {timeLeft.days} Days{' '}
+            </motion.span>
+            <motion.span variants={itemVariants}>
+              {timeLeft.hours} Hours{' '}
+            </motion.span>
+            <motion.span variants={itemVariants}>
+              {timeLeft.minutes} Minutes{' '}
+            </motion.span>
+            <motion.span variants={itemVariants}>
+              {timeLeft.seconds} Seconds
+            </motion.span>
+          </>
+        )}
+      </div>
+    </motion.div>
   );
 }
 
