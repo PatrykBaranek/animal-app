@@ -9,6 +9,9 @@ const config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-chicle)']
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

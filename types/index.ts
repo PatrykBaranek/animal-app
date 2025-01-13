@@ -5,3 +5,8 @@ export type CatApiResponse = {
   width: number;
   height: number;
 }
+
+export type DogApiResponse = {
+  message: string[];
+  status: string;
+};

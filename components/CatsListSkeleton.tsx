@@ -8,7 +8,7 @@ export default function CatsListSkeleton() {
           key={index}
           className="relative aspect-square overflow-hidden rounded-lg shadow-md"
         >
-          <Skeleton className="h-full w-full bg-slate-50 object-cover" />
+          <Skeleton className="h-full w-full bg-gray-600 object-cover" />
         </div>
       ))}
     </>

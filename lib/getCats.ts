@@ -1,5 +1,5 @@
 import { CATS_API_PATH } from "@/constants/paths";
-import { CatApiResponse } from "@/types/CatsApi";
+import { CatApiResponse } from "@/types";
 
 export async function getCats(): Promise<CatApiResponse[]> {
   const url = new URL(CATS_API_PATH);
